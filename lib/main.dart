@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 void main() => runApp(MyApp());
 
@@ -17,7 +18,7 @@ class ImagePickerWidget extends StatefulWidget {
 }
 
 class _ImagePickerWidgetState extends State<ImagePickerWidget> {
-  var _imgPath;
+  var _image;
 
   @override
   Widget build(BuildContext context) {
@@ -28,14 +29,14 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            _ImageView(_imgPath),
+            _ImageView(_image),
             RaisedButton(
               onPressed: _takePhoto,
               child: Text("拍照"),
             ),
             RaisedButton(
               onPressed: _openGallery,
-              child: Text("選擇照片"),
+              child: Text("Choice picture"),
             ),
           ],
         ),
@@ -47,10 +48,26 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
   Widget _ImageView(imgPath) {
     if (imgPath == null) {
       return Center(
-        child: Text("請選擇照片或拍照"),
+        child: Text("CHoice picture or takephoto"),
       );
     } else {
       return Image.file(imgPath);
     }
+  }
+
+  //take photo
+  _takePhoto() async {
+    var image = await ImagePicker.pickImage(source: ImageSource.camera);
+
+    setState(() {
+      _image = image;
+    });
+  }
+
+  _openGallery() async {
+    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      _image = image;
+    });
   }
 }
