@@ -18,7 +18,7 @@ class ImagePickerWidget extends StatefulWidget {
 }
 
 class _ImagePickerWidgetState extends State<ImagePickerWidget> {
-  var _image;
+  var _imagePath;
 
   @override
   Widget build(BuildContext context) {
@@ -29,14 +29,25 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            _ImageView(_image),
+            _imageView(_imagePath),
             RaisedButton(
               onPressed: _takePhoto,
-              child: Text("拍照"),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text("Take photo!"),
+              ),
+            ),
+            SizedBox(
+              height: 40.0,
             ),
             RaisedButton(
               onPressed: _openGallery,
-              child: Text("Choice picture"),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  'Choice picture!',
+                ),
+              ),
             ),
           ],
         ),
@@ -44,14 +55,24 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
     );
   }
 
-  //圖片元件
-  Widget _ImageView(imgPath) {
-    if (imgPath == null) {
-      return Center(
-        child: Text("CHoice picture or takephoto"),
+  //picture widge
+  Widget _imageView(imagePath) {
+    if (imagePath == null) {
+      return Padding(
+        padding: const EdgeInsets.only(top: 40.0, bottom: 40.0),
+        child: Center(
+          child: Text(
+            "CHoice picture or takephoto",
+            style: TextStyle(
+              fontSize: 20.0,
+              fontWeight: FontWeight.bold,
+              color: Colors.black54,
+            ),
+          ),
+        ),
       );
     } else {
-      return Image.file(imgPath);
+      return Image.file(imagePath);
     }
   }
 
@@ -60,14 +81,14 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
     var image = await ImagePicker.pickImage(source: ImageSource.camera);
 
     setState(() {
-      _image = image;
+      _imagePath = image;
     });
   }
 
   _openGallery() async {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
     setState(() {
-      _image = image;
+      _imagePath = image;
     });
   }
 }
